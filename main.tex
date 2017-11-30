@@ -64,15 +64,20 @@ This section refers to previous works, presenting valuable theories and techniqu
 Business process re-engineering is firstly proposed by \cite{Hammer1990} as an approach to tackle the problem of improving the quality of business processes, while reducing their cost. One of the earlier works presenting workflow management systems are \cite{EngelGLT79, Ellis1982}. The term \textit{information control net model} gets introduced by \cite{Ellis1982}, which can be seen as one of the earlier variants of workflow models. 
 
 % Talk about workflow mining
-Although the concept of process mining exists for over 25 years \cite{}, the paradigm of workflow mining is first introduced by \cite{Agrawal1998}. They present an algorithm which has a set of unstructured executions of a business process as input, and outputs a minimal dependency graph representing the control flow of this business process. 
+Whereas the notion of process mining emerged within the last two decades \cite{VanderAalst2003}, the concept of workflow mining is first introduced by \cite{Agrawal1998}. They present an algorithm which has a set of unstructured executions of a business process as input, and outputs a minimal dependency graph representing the control flow of this business process. Furthermore, they discuss ways to cope with cycles in the graph and noise in event logs (missing executions of tasks or wrongly inserted tasks in a log). Others heuristic approaches for noise and incomplete logs are presented in \cite{Maruster2002, Weijters2001, Weijters}. The heuristic approach \cite{Weijters2001, Weijters} is a combination of the following steps: (1) constructing a dependency/frequency table, (2) mining basic dependency relations out of this table and (3) creating a workflow based on the relations found. Besides using these steps, \cite{Maruster2002} presents a logistic regression model to learn when two events are direct dependencies of one another. 
+
+As I already mentioned earlier, there are no real standards when it comes to the workflow paradigm \cite{VanderAalst1997}. This causes that management systems use different modeling languages, but a more important problem is the ability of verifying and analyzing workflows is often not available in such tools \cite{VanderAalst1997}. Because of this reason, \cite{VanderAalst1997} shows that a class of \textit{Petri nets} can be used as a way to represent workflows, which they call \textit{WF-nets}. Also, the correctness of WF-nets can be analyzed using the Petri net theory.
+
+
+\cite{VanDerAalst2002} states that it is impossible to mine every possible WF-net. They name this challenge being the \textit{rediscovery problem}: \textit{"Find a mining algorithm able to rediscover a large class of sound WF-nets on the basis of complete workflow logs."}\cite{VanDerAalst2002}. An algorithm which can successfully mine a large class of WF-nets is the $\alpha$-algorithm \cite{VanderAalst2003,VanDerAalst2002, VanderAalst2002TimedLogs}, which assumes that the given workflow log is complete (this means that every possible execution path of the business process at hand must be present in the log). An extension of the $\alpha$-algorithm is presented in \cite{VanderAalst2002TimedLogs} in order to incoporate time. 
+
+A way to compute the overall quality of a mined workflow model is proposed by \cite{VanderAalst2003}.
 
 % Talk about workflow patterns
 
-% Talk about sequence mining
+% Talk about sequential pattern mining
 
 % Talk about word2vec
-
-
 
 
 \bibliographystyle{unsrt}
