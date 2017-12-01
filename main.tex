@@ -57,9 +57,12 @@ This problem basically consists of the following subproblems:
 \item How can we mine occurrences of a pattern from a collection of logging data?
 \end{enumerate}
 
-\section{Literature Study}
-This section refers to previous works, presenting valuable theories and techniques around workflows, patterns and the problem of mining such structures using workflow logs.
+\section{Problem}
+The challenge which we try to solve in this master thesis, is to find interesting patterns in a given collection of workflow event logs from the Profit product by AFAS Software BV. 
 
+\section{Literature Study}
+This section refers to previous works, presenting theories and techniques around workflows, patterns and the problem of mining such structures using workflow logs which are valuable for our research.\\
+\\
 % Talk about process re-engineering in general and about workflows
 Business process re-engineering is firstly proposed by \cite{Hammer1990} as an approach to tackle the problem of improving the quality of business processes, while reducing their cost. One of the earlier works presenting workflow management systems are \cite{EngelGLT79,Ellis1982}. The term \textit{information control net model} gets introduced by \cite{Ellis1982}, which can be seen as one of the earlier variants of workflow models. 
 
@@ -67,7 +70,7 @@ As I mentioned earlier, there are no real standards when it comes to the workflo
 
 % Talk about workflow patterns
 
-The most common way to verify whether a workflow language is a good representation is by checking which \textit{workflow patterns} are covered by this language. A workflow pattern is described by \cite{Riehle1996} as \textit{"the abstraction from a concrete from which keeps recurring in specific nonarbitrary contexts"}, which holds that a pattern represents a certain functionality in a workflow while being dependent of the modeling language. Many \cite{VanderAalst2003Patterns,Dijkstra2003ControlPatterns,Russell2004DataPatterns,Russell2005ResourcePatterns,Russell2006ExceptionPatterns} describe workflow patterns providing functional requirements for workflow model languages. 
+The most common way to verify whether a workflow language is a good representation is by checking which \textit{workflow patterns} are covered by this language. A workflow pattern is described by \cite{Riehle1996} as \textit{"the abstraction from a concrete from which keeps recurring in specific nonarbitrary contexts"}, which holds that a pattern represents a certain functionality in a workflow while being dependent of the modeling language. Many \cite{VanderAalst2003Patterns,Dijkstra2003ControlPatterns,Russell2004DataPatterns,Russell2005ResourcePatterns,Russell2006ExceptionPatterns} describe workflow patterns providing functional requirements for workflow model languages. As stated in \cite{VanderAalst2003Patterns,Dijkstra2003ControlPatterns,Russell2004DataPatterns,Russell2005ResourcePatterns,Russell2006ExceptionPatterns}, a workflow pattern is defined by (1) a set of conditions which must be satisfied to be applicable, (2) examples of business situations where this pattern should be applied, (3) a problem description stating why applying this pattern is not trivial and (4) implementation solutions.
 
 
 % Talk about workflow mining
