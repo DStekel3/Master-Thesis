@@ -17,7 +17,7 @@
 \title{Research Project Proposal - Finding Interesting Patterns in Workflow Logging Data}
 \date{\today}
 \author{
-        Dani\"el Stekelenburg, 4153286		
+        Dani\"el Stekelenburg		
 }
  
 \maketitle
@@ -40,11 +40,11 @@ To make things more concrete, let us use a graph-like structure to represent a w
 \caption{Example workflow, representing the process of buying additional leave. Gray nodes are tasks, whereas blue nodes are actions. }
 \end{figure}
 
-In case one of the two approvers does not agree with the request, the employee needs to adjust his request. Note that the action \textit{Resend} refers to the task \textit{Approve}. This means that this action leads to the task \textit{Approve} (another way to show this functionality would be to simply add an arrow from \textit{Resend} to the leftmost Approve\textit{Approve}). Finally, the workflow is completed when the rightmost \textit{Accept} action is executed.
+In case one of the two approvers does not agree with the request, the employee needs to adjust his request. Note that the action \textit{Resend} refers to the task \textit{Approve}. This means that this action leads to the task \textit{Approve} (another way to show this functionality would be to simply add an arrow from \textit{Resend} to the leftmost Approve\textit{Approve}). Finally, the workflow is completed when the rightmost \textit{Accept} action is executed.\\
+Besides tasks and actions, there are workflow patterns. According to \cite{Riehle1996}, a pattern \textit{“is the abstraction from a concrete form which keeps recurring in specific nonarbitrary contexts”}. In other words, a pattern is an abstraction of a concrete set of tasks of actions and is independent of the workflow language used. An example is the or-split workflow pattern, which is visible in Figure \ref{figure:example_workflow}. Since the task \textit{Approve} has two actions and you may only choose one, you can see this structure as an OR-split.\\
+The problem we try to solve, is to find certain patterns within such a workflow. However, we look beyond the purely syntactic scope of patterns and try to include the semantics or contextual meaning of a pattern. To give an example, we can say that the workflow in Figure \ref{figure:example_workflow} contains a pattern which we call the \textit{agreeing pattern} ("accordeer patroon" in Dutch). In short, this pattern exists of a task which represents the decision whether some change in the system gets accepted or not. As you can see, such a decision occurs two times in the workflow: the manager needs to approve the request and also the administrator needs to approve this (indicated as the dotted areas in Figure \ref{figure:example_workflow}). So when we try to find occurrences of the agreeing pattern, we would like to see these two parts of the workflow in the result of our query.
 \\
 \\
-Besides tasks and actions, there are workflow patterns. According to \cite{Riehle1996}, a pattern \textit{“is the abstraction from a concrete form which keeps recurring in specific nonarbitrary contexts”}. In other words, a pattern is an abstraction of a concrete set of tasks of actions and is independent of the workflow language used. An example is the or-split workflow pattern, which is visible in Figure \ref{figure:example_workflow}. Since the task \textit{Approve} has two actions and you may only choose one, you can see this structure as an OR-split (choose \textit{Okay} .
-
 As a business company, you often can use workflows provided with your ERP-software package or create your own workflow. Provided workflow templates are in general workflows which represent very common business processes and most companies would like to use them. When you would like to have a workflow for a very specific process, you might have to assemble your own workflow structure.
 
 In the eyes of an IT-company which develops and sells ERP-software, it is important to know which processes are most common in a company and what tasks are mostly used in workflows. Of course, having a good insight in the usage of workflows will be very helpful when you want to deliver a workflow management system. Getting a better understanding of the importance of a pattern in a workflow is the goal of this research project. More specifically, we try to find patterns in workflows which we classify as frequent.
@@ -56,9 +56,12 @@ This problem basically consists of the following subproblems:
 \item When is a pattern frequent?
 \item How can we mine occurrences of a pattern from a collection of logging data?
 \end{enumerate}
+We answer these subproblems formally in the next section.
 
 \section{Problem}
-The challenge which we try to solve in this master thesis, is to find interesting patterns in a given collection of workflow event logs from the Profit product by AFAS Software BV. 
+The challenge which we undertake in this thesis, is to find interesting patterns in a given collection of workflow event logs from the Profit product by AFAS Software BV. Without defining \textit{interesting} in our context, we want to know the behavior of workflows and hope to find patterns which represent this behavior the best. Note that we want to look further than the syntactic value of a pattern. We try to come up with a technique such that we can also mine patterns based on their semantics, which will give us a lot more information. 
+
+% ANSWER THE QUESTIONS STATED IN THE PREVIOUS SECTION
 
 \section{Literature Study}
 This section refers to previous works, presenting theories and techniques around workflows, patterns and the problem of mining such structures using workflow logs which are valuable for our research.\\
@@ -72,18 +75,23 @@ As I mentioned earlier, there are no real standards when it comes to the workflo
 
 The most common way to verify whether a workflow language is a good representation is by checking which \textit{workflow patterns} are covered by this language. A workflow pattern is described by \cite{Riehle1996} as \textit{"the abstraction from a concrete from which keeps recurring in specific nonarbitrary contexts"}, which holds that a pattern represents a certain functionality in a workflow while being dependent of the modeling language. Many \cite{VanderAalst2003Patterns,Dijkstra2003ControlPatterns,Russell2004DataPatterns,Russell2005ResourcePatterns,Russell2006ExceptionPatterns} describe workflow patterns providing functional requirements for workflow model languages. As stated in \cite{VanderAalst2003Patterns,Dijkstra2003ControlPatterns,Russell2004DataPatterns,Russell2005ResourcePatterns,Russell2006ExceptionPatterns}, a workflow pattern is defined by (1) a set of conditions which must be satisfied to be applicable, (2) examples of business situations where this pattern should be applied, (3) a problem description stating why applying this pattern is not trivial and (4) implementation solutions.
 
-
 % Talk about workflow mining
-Whereas the notion of process mining emerged within the last two decades \cite{VanderAalst2003}, the concept of workflow mining is first introduced by \cite{Agrawal1998}. They present an algorithm which has a set of unstructured executions of a business process as input, and outputs a minimal dependency graph representing the control flow of this business process. Furthermore, they discuss ways to cope with cycles in the graph and noise in event logs (missing executions of tasks or wrongly inserted tasks in a log). Others heuristic approaches for noise and incomplete logs are presented in \cite{Maruster2002,Weijters2001,Weijters}. The heuristic approach \cite{Weijters2001,Weijters} is a combination of the following steps: (1) constructing a dependency/frequency table, (2) mining basic dependency relations out of this table and (3) creating a workflow based on the relations found. Besides using these steps, \cite{Maruster2002} presents a logistic regression model to learn when two events are direct dependencies of one another. 
-
+Whereas the notion of process mining emerged within the last two decades \cite{VanderAalst2003}, the concept of workflow mining is first introduced by \cite{Agrawal1998}, where an algorithm is presented which has a set of unstructured executions of a business process as input, and outputs a minimal dependency graph representing the control flow of this business process. Furthermore, they discuss ways to cope with cycles in the graph and noise in event logs (missing executions of tasks or wrongly inserted tasks in a log). Others heuristic approaches for noise and incomplete logs are presented in \cite{Maruster2002,Weijters2001,Weijters}. The heuristic approach \cite{Weijters2001,Weijters} is a combination of the following steps: (1) constructing a dependency/frequency table, (2) mining basic dependency relations out of this table and (3) creating a workflow based on the relations found. Besides using these steps, \cite{Maruster2002} presents a logistic regression model to learn when two events are direct dependencies of one another. 
 
 \cite{VanDerAalst2002} states that it is impossible to mine every possible WF-net. They name this challenge being the \textit{rediscovery problem}: \textit{"Find a mining algorithm able to rediscover a large class of sound WF-nets on the basis of complete workflow logs."}\cite{VanDerAalst2002}. An algorithm which can successfully mine a large class of WF-nets is the $\alpha$-algorithm \cite{VanderAalst2003,VanDerAalst2002,VanderAalst2002TimedLogs}, which assumes that the given workflow log is complete (this means that every possible execution path of the business process at hand must be present in the log). Although this completeness requirement is easy to satisfy for a simple workflow, larger workflows will have more trouble. For instance, a workflow having 10 tasks which can be executed in parallel results in $10!=3628800$ possible execution sequences. As you can tell, there is a rather small chance that every possible sequence is covered in a corresponding workflow log. An extension of the $\alpha$-algorithm is presented in \cite{VanderAalst2002TimedLogs} in order to mine timed workflow logs. Timestamps in such logs can be used to study the performance and bottlenecks of tasks in a process. 
+
+
+% Talk about event logging formats
+
 
 % Talk about sequential pattern mining
 
 % Talk about word2vec
 
 % Talk about workflow(pattern) mining tools
+The most popular tool for process mining is ProM \cite{ProM6}. This extensible framework has over 600 different plug-ins, including process mining algorithms like the $\alpha$-algorithm, adding their own functionality to the complete software package. This bibliography gives the user lots of possibilities when it comes down to mining event logs and the user interface helps with getting a good understanding of the structure of process models. Unfortunately for us, ProM does not include any functionality for discovering structural patterns based on workflow events. Others did focus on workflow pattern mining. In \cite{WorkflowMiner2006} are rules shown which describe the discovery of sequence- fork- and join workflow patterns. 
+
+\section{Project Planning}
 
 \bibliographystyle{unsrt}
 \bibliography{sources}
