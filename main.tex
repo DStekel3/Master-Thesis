@@ -167,14 +167,33 @@ Neurons have three different types, input, hidden and output. Figure \ref{figure
 \end{figure}
 
 \subsubsection{Continuous Bag-of-Words model}
-The Continuous bag-of-words model is the first part of the word2vec technique. This model uses context words as its input and, using a neural network, outputs the target word for which the model thinks is the most likely word with the context words as its surrounding. The simplest version of this model is a model which uses one context word, as shown in Figure \ref{figure:one-context-word}. 
+The Continuous bag-of-words model is the first part of the word2vec technique. This model uses context words as its input and, using a neural network, outputs the target word for which the model thinks is the most likely word with the context words as its surrounding. The simplest version of this model is a model which uses one context word, as shown in Figure \ref{figure:one-context-word}. Here, the vector $\vec{x}$ is a one-hot vector, meaning that it only contains a $1$ once and the rest of the $V$ positions are $0$'s. The size $V$ depends on the number of words used in the dictionary, and every word has a different vector $\vec{x}$. Thus, you can imagine that this vector can become quite large when you use a lot of different context words. We will come back later at this problem. % CURSE OF DIMENTIONALITY!
 
-\begin{figure}[h]
+The weights are represented by the matrices $\vec{W}_{V \times N}$ and $\vec{W'}_{N \times V}$, where every row $i$ in $\vec{W}_{V \times N}$ represents the weights vector $\vec{w}^T_i$ (with length $N$) for a context word. Thus, given a context word $w_A$, where $x = [0\ldots,0,1,0\ldots0]^T$ assuming $x_k=1$ and $x_k'=0$ for $x_k' \not= x_k$, the hidden layer will become $\vec{h}$ like,
+
+\begin{equation}
+\vec{h} = \vec{W}^T\vec{x} = \vec{W}^T_{(k,\cdot)} = \vec{v}^T_{w_k}
+\end{equation}
+
+In other words, we copy the $k$-th row of $\vec{W}$ to $\vec{h}$, which we simply call $\vec{v}^T_{w_k}$. For the output, we use matrix $\vec{W'}_{N \times V}$, which contains the weights of each $N$-sized representation of the hidden layer in order to compute the output layer. Note that the output layer, like the input layer, has the same number of neurons ($V$ in our case). This is quite obvious, since $V$ represents the number of words we can use and we are looking for a word. Computing this target word is done by computing a score $u_j$ for each possible word, like
+\begin{equation}
+u_j = \vec{v'}_{w_j}^T \vec{h},
+\end{equation}
+where $\vec{v'}_{w_j}^T$ is the $j$-th column in the matrix $\vec{W'}$. After every $u_j$ for every $j \in [1-V]$ are computed, the value for each value $y_j$ $\vec{y}$ is determined using a softmax function for normalization \cite{bishop2007pattern}:
+
+\begin{equation}
+y_j = p(w_j|w_A) = \dfrac{\exp(u_j)}{\sum_{j'=1}^V \exp(u_j')}.
+\end{equation}
+Here, $p(w_j|w_A)$ stands for the probability of the word $w_j$ being the target word, considering the context word $w_A$. Eventually, the highest value $y_j$ is the predicted answer of your query. The goal of training this model is to maximize the value $y_j$ for the label $w_O$, which we want to predict. The loss function $E=-log \textit{p}(w_O|w_I)$ represents the error made by the model (we try to minimize $E$). Having a perfect prediction results in $E=0$. Updating this model is done using this loss function.
+
+\begin{figure}[H]
 \centering
-\includegraphics[width=.8\linewidth]{one-context-word.png}
+\includegraphics[width=.7\linewidth]{one-context-word.png}
 \caption{CBOW model which uses only one context word as input. Source: \cite{Rong2014word2vec}}
 \label{figure:one-context-word}
 \end{figure}
+
+
 
 \section{Project Planning}
 The first step in this case study is applying pre-processing steps on the available data. This means that we want the available workflow event data to be structured in such a way, that we can apply existing workflow mining algorithms on it to discover causal relations between tasks in a workflow. This phase not only consists of filtering noise or sorting/grouping the data in a certain way, but the challenge of determining which tasks or actions mean the same thing will also be tackled. Solving this problem is done by capturing the semantics of tasks and actions of a workflow. In order to achieve this, we will use the descriptions of tasks and actions. Using word2vec \cite{Mikolov2013a,Mikolov2013b}, we can represent such descriptions into a vector space model and compute the similarity between these descriptions. Based on a certain threshold value $\pi$, we determine when descriptions are said to be similar. The exact value of $\pi$ needs to be determined based on some different performance tests and will most likely differ per workflow pattern being studied.
