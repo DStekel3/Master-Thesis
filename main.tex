@@ -14,6 +14,7 @@
 \usepackage{amsthm}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{hyperref}
 
 \begin{document}
 
@@ -47,8 +48,8 @@ To make things more concrete, let us use a graph-like structure to represent a w
 \begin{figure}[H]
 \centering
 \includegraphics[width=\linewidth]{Example_Workflow.pdf}
-\label{figure:example_workflow}
 \caption{Example workflow, representing the process of buying additional leave. Gray nodes are tasks, whereas blue nodes are actions. The dotted squares represent occurrences of the Approval pattern.}
+\label{figure:example_workflow}
 \end{figure}
 
 In case one of the two approvers does not agree with the request, the employee needs to adjust his request. Note that the action \textit{Resend} refers to the task \textit{Approve}. This means that this action leads to the task \textit{Approve} (another way to show this functionality would be to simply add an arrow from \textit{Resend} to the leftmost \textit{Approve}). Finally, the workflow is completed when the rightmost \textit{Accept} action is executed.\\
@@ -166,7 +167,14 @@ Neurons have three different types, input, hidden and output. Figure \ref{figure
 \end{figure}
 
 \subsubsection{Continuous Bag-of-Words model}
-The Continuous bag-of-words model is the first part of the word2vec technique. This model uses context words as its input and, using a neural network, outputs the target word for which it thinks is the most likely word with the context words as its surrounding.
+The Continuous bag-of-words model is the first part of the word2vec technique. This model uses context words as its input and, using a neural network, outputs the target word for which the model thinks is the most likely word with the context words as its surrounding. The simplest version of this model is a model which uses one context word, as shown in Figure \ref{figure:one-context-word}. 
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=.8\linewidth]{one-context-word.png}
+\caption{CBOW model which uses only one context word as input. Source: \cite{Rong2014word2vec}}
+\label{figure:one-context-word}
+\end{figure}
 
 \section{Project Planning}
 The first step in this case study is applying pre-processing steps on the available data. This means that we want the available workflow event data to be structured in such a way, that we can apply existing workflow mining algorithms on it to discover causal relations between tasks in a workflow. This phase not only consists of filtering noise or sorting/grouping the data in a certain way, but the challenge of determining which tasks or actions mean the same thing will also be tackled. Solving this problem is done by capturing the semantics of tasks and actions of a workflow. In order to achieve this, we will use the descriptions of tasks and actions. Using word2vec \cite{Mikolov2013a,Mikolov2013b}, we can represent such descriptions into a vector space model and compute the similarity between these descriptions. Based on a certain threshold value $\pi$, we determine when descriptions are said to be similar. The exact value of $\pi$ needs to be determined based on some different performance tests and will most likely differ per workflow pattern being studied.
