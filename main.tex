@@ -12,6 +12,8 @@
 \usepackage{hhline}
 \usepackage{makecell}
 \usepackage{amsthm}
+\usepackage{caption}
+\usepackage{subcaption}
 
 \begin{document}
 
@@ -20,6 +22,8 @@
 
 \theoremstyle{definition}
 \newtheorem{defn}[thm]{Definition}
+
+\renewcommand{\vec}[1]{\mathbf{#1}}
 
 \title{Research Project Proposal - Finding Interesting Patterns in Workflow Logging Data}
 \date{\today}
@@ -124,23 +128,50 @@ A widely used tool for process mining is ProM \cite{ProM6} (at the time of writi
 The model is proposed in 2013 by \cite{Mikolov2013a,Mikolov2013b}. The earlier work of Mikolov et al. \cite{Mikolov2013a} explains the use of a continuous-bag-of-words model (CBOW). A bag-of-words model translates a given document as a bag of words. Since word2vec uses the notion of neural networks, let me explain this concept shortly. 
 
 \subsubsection{Neural Networks}
-An artificial neural network is based on a biological phenomenom, the human brain. Like a human brain, a neural network exists of neurons. Depending on the given information, i.e. input values, the neurons give a certain output. The most occurring output is eventually mostly likely the answer of your observation. In Figure \ref{figure:neuralnetwork}, you can see the model of a neural network with two input values $\{x_1,x_2\}$ (the input layer), two neurons $\{n_1, n_2\}$ (the hidden layer) and three output values $\{y_1,y_2,y_3\}$. As input of a neuon, the input values get weighted by $\{w_1,w_2,w_3,w_4\}$ and averaged:
+An artificial neural network is based on a biological phenomenom, the human brain. Like a human brain, a neural network exists of neurons. Depending on the given information, i.e. input values, the neurons give a certain output. The input values and their weights can also be represented as vectors $\vec{x}$ and $\vec{w}$. For a more graphical example, see Figure \ref{figure:neuron}.
+
+The input of a neuron is determined by computing average of the sum over the input values and their weights, defined as
 
 \begin{equation}
-u = \sum_{i=0}^{K}w_i x_i
+u = \sum_{i=0}^{K}w_i x_i = \vec{w}^T \vec{x}.
 \end{equation}
 
-A neuron is eventually a function $f$, with input value $u$. In short, $f(u)$. The output of $f(u)$ is one of the possible output values. Recall the example network in Figure \ref{figure:neuralnetwork}, where $f(u)_{n_1} = $ $y_1$, $y_2$ or $y_3$. Quite obvious, the same counts for $f(u)_{n_2}$.
+A neuron uses a function $f(u)$ to determine its output value. For instance, you can use a simple function like the binary threshold-function:
+
+\begin{equation}
+f(u) = \begin{cases}
+1 & \vec{w}^T \vec{x} \geq \theta \\
+0 & \text{otherwise}
+\end{cases}
+\end{equation}
+Using this function, a neuron results in either a 1 or a 0. However, there are also more complex functions from which the number of possible output values is much higher, resulting in a more detailed network. But the important thing to know is, that a layer of neurons influence the next layer etc. Eventually, in the output layer, the neuron with the highest value is the classified answer of the network.
+
+Neurons have three different types, input, hidden and output. Figure \ref{figure:neuralnetwork} presents a multi-layered neural network (note the three layers). Neurons in the input layer already have a certain value, whereas the hidden needs to compute its output values for every neuron in the next layer. Ultimately, the output layer consists of neurons representing the possible answers you are looking for. 
 
 \begin{figure}[h]
-\centering
-\includegraphics[width=0.9\linewidth]{NeuralNetworkExample.pdf}
-\caption{Example of the setup of a neural network.}
-\label{figure:neuralnetwork}
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.8\linewidth]{Neuron.png}
+  \caption{A neuron.}
+  \label{figure:neuron}
+\end{subfigure}%
+\begin{subfigure}{.6\textwidth}
+  \centering
+  \includegraphics[width=.9\linewidth]{NeuralNetworkExample.png}
+  \caption{Example of a neural network.}
+  \label{figure:neuralnetwork}
+\end{subfigure}
+\caption{On the left, see the basic environment of a neuron. On the right, a multi-layered neural network is shown.}
+\label{figure:NeuralNetworks}
 \end{figure}
 
+\subsubsection{Continuous Bag-of-Words model}
+The Continuous bag-of-words model is the first part of the word2vec technique. This model uses context words as its input and, using a neural network, outputs the target word for which it thinks is the most likely word with the context words as its surrounding.
+
 \section{Project Planning}
-The first step in this case study is applying pre-processing steps on the available data. This means that we want the available workflow event data to be structured in such a way, that we can apply existing workflow mining algorithms on it to discover causal relations between tasks in a workflow. This phase not only consists of filtering noise or sorting/grouping the data in a certain way, but the challenge of determining which tasks or actions mean the same thing will also be tackled. Solving this problem is done by capturing the semantics of tasks and actions of a workflow. In order to achieve this, we will use the descriptions of tasks and actions. Using word2vec \cite{Mikolov2013a,Mikolov2013b}, we can represent such descriptions into a vector space model and compute the similarity between these descriptions. Based on a certain threshold value $\pi$, we determine when descriptions are said to be similar. The exact value of $\pi$ needs to be determined based on some different performance tests.  
+The first step in this case study is applying pre-processing steps on the available data. This means that we want the available workflow event data to be structured in such a way, that we can apply existing workflow mining algorithms on it to discover causal relations between tasks in a workflow. This phase not only consists of filtering noise or sorting/grouping the data in a certain way, but the challenge of determining which tasks or actions mean the same thing will also be tackled. Solving this problem is done by capturing the semantics of tasks and actions of a workflow. In order to achieve this, we will use the descriptions of tasks and actions. Using word2vec \cite{Mikolov2013a,Mikolov2013b}, we can represent such descriptions into a vector space model and compute the similarity between these descriptions. Based on a certain threshold value $\pi$, we determine when descriptions are said to be similar. The exact value of $\pi$ needs to be determined based on some different performance tests and will most likely differ per workflow pattern being studied.
+\\
+After the vector space model is trained on the descriptions of the available workflow logging data, we can start with the actual mining phase. During this phase, we will try to find occurrences of a given workflow pattern. However, this can only be done when we have structured a workflow event log into a workflow model. When we have obtained the corresponding workflow model, we can properly search for the pattern we are interested in. 
 
 \bibliographystyle{unsrt}
 \bibliography{sources}
