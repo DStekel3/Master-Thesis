@@ -16,6 +16,8 @@
 \usepackage{subcaption}
 \usepackage{hyperref}
 
+\graphicspath{{./figures/}}
+
 \begin{document}
 
 \theoremstyle{plain}
@@ -87,6 +89,43 @@ Recall the ``Approving pattern" from the example workflow in Figure \ref{figure:
 Two workflow patterns $p$ and $p'$ are said to be similar if they represent the same objective $O$. Thus, $p=p'$ i.f.f. $p \rightarrow O \wedge p' \rightarrow O$.
 \end{defn}
 
+
+\section{Literature Study}
+\label{section:literature}
+This section refers to previous works, presenting theories and techniques around workflows, workflow patterns and the problem of mining such structures using workflow logs which are valuable for our research.\\
+\\
+% Talk about process re-engineering in general and about workflows
+Business process re-engineering is firstly proposed by \cite{Hammer1990} as an approach to tackle the problem of improving the quality of business processes, while reducing their cost. One of the earlier works presenting workflow management systems are \cite{EngelGLT79,Ellis1982}. The term \textit{information control net model} gets introduced by \cite{Ellis1982}, which can be seen as one of the earlier variants of workflow models. 
+
+As I mentioned earlier, there are no real standards when it comes to the workflow paradigm \cite{VanderAalst1997}. This causes that management systems use different modeling languages, but a more important problem is the ability of verifying and analyzing workflows is often not available in such tools \cite{VanderAalst1997}. Because of this reason, \cite{VanderAalst1997} shows that a class of \textit{Petri nets} can be used as a way to represent workflows, which they call \textit{WF-nets}. Also, the correctness of WF-nets can be analyzed using the Petri net theory. 
+
+% Talk about workflow patterns
+
+The most common way to verify whether a workflow language is a good representation is by checking which \textit{workflow patterns} are covered by this language. A workflow pattern is described by \cite{Riehle1996} as \textit{``the abstraction from a concrete from which keeps recurring in specific nonarbitrary contexts"}, which holds that a pattern represents a certain functionality in a workflow while being dependent of the modeling language. Many \cite{VanderAalst2003Patterns,Dijkstra2003ControlPatterns,Russell2004DataPatterns,Russell2005ResourcePatterns,Russell2006ExceptionPatterns} describe workflow patterns providing functional requirements for workflow model languages. As stated in \cite{VanderAalst2003Patterns,Dijkstra2003ControlPatterns,Russell2004DataPatterns,Russell2005ResourcePatterns,Russell2006ExceptionPatterns}, a workflow pattern is defined by (1) a set of conditions which must be satisfied to be applicable, (2) examples of business situations where this pattern should be applied, (3) a problem description stating why applying this pattern is not trivial and (4) implementation solutions.
+
+% Talk about workflow mining
+Whereas the notion of process mining emerged within the last two decades \cite{VanderAalst2003}, the concept of workflow mining is first introduced by \cite{Agrawal1998}, where an algorithm is presented which has a set of unstructured executions of a business process as input, and outputs a minimal dependency graph representing the control flow of this business process. Furthermore, they discuss ways to cope with cycles in the graph and noise in event logs (missing executions of tasks or wrongly inserted tasks in a log). Others heuristic approaches for noise and incomplete logs are presented in \cite{Maruster2002,Weijters2001,Weijters}. The heuristic approach \cite{Weijters2001,Weijters} is a combination of the following steps: (1) constructing a dependency/frequency table, (2) mining basic dependency relations out of this table and (3) creating a workflow based on the relations found. Besides using these steps, \cite{Maruster2002} presents a logistic regression model to learn when two events are direct dependencies of one another. 
+
+\cite{VanDerAalst2002} states that it is impossible to mine every possible WF-net. They name this challenge being the \textit{rediscovery problem}: \textit{``Find a mining algorithm able to rediscover a large class of sound WF-nets on the basis of complete workflow logs."}\cite{VanDerAalst2002}. An algorithm which can successfully mine a large class of WF-nets is the $\alpha$-algorithm \cite{VanderAalst2003,VanDerAalst2002,VanderAalst2002TimedLogs}, which assumes that the given workflow log is complete (this means that every possible execution path of the business process at hand must be present in the log). Although this completeness requirement is easy to satisfy for a simple workflow, larger workflows will have more trouble. For instance, a workflow having 10 tasks which can be executed in parallel results in $10!=3628800$ possible execution sequences. As you can tell, there is a rather small chance that every possible sequence is covered in a corresponding workflow log. Besides, the $\alpha$-algorithm did have issues with loops and self-loops. Multiple extensions on the $alpha$-algorithm have been developed. like The $\alpha+$ variant \cite{A+-algorithm2004} which can deal with such short loops, and \cite{VanderAalst2002TimedLogs} which applies the algorithm on timed logs. Other approaches are the Heuristics miner, which can deal with noise \cite{HeuristicsMiner2006}, and the Inductive Miner \cite{InductiveMiner2013} that finds a sound and fitting process model in polynomial time.\\
+\\
+
+% Talk about event logging formats
+
+% Talk about word2vec
+When we search for research done on determining semantic meanings of words, we see that this field has attracted a lot attention in the last few years. Especially the word2vec model \cite{Mikolov2013a,Mikolov2013b} is a popular technique. This technique results in a vector space representation of words which carries semantic meanings and is very useful in natural language processing tasks. Word2vec is explained in further detail in Section \ref{section:word2vec}.
+
+% Talk about workflow(pattern) mining tools
+A widely used tool for process mining is ProM \cite{ProM6} (at the time of writing the latest ProM version is 6.7). This open-source, extensible framework has over 600 different plug-ins, including process mining algorithms like the $\alpha$-algorithm, who add their own functionality to the complete software package. ProM gives the user lots of possibilities when it comes down to mining event logs and the user interface helps with getting a good understanding of the structure of process models. In the article \cite{WorkflowMiner2006} are rules shown which describe the sequence- fork- and join workflow patterns. Furthermore, they made a plug-in for ProM 5.2 called ``Workflow pattern miner". 
+
+\section{Problem}
+The challenge which we undertake in this thesis, is to reason about interesting patterns in a given collection of workflow event logs. As a case study, we use the data of the current product of our case company AFAS Software BV. Before defining \textit{interesting} in our context, we want to know the behavior of workflows and hope to find patterns which represent this behavior the best. Note that we want to look further than the syntactic value of a pattern. We try to come up with a technique such that we can also mine patterns based on their semantics, which will give us a lot more information.\\
+\\
+During an iterative development, including meetings with domain experts of AFAS, we try to discover workflow patterns from which AFAS knows that they exist. However, the behavior of these workflow patterns are still unknown. Thus, by mining and analyzing occurrences of such patterns, we hope to find certain properties about these patterns. Drawing conclusions about such properties are being studied by the use of hypotheses testing. Which hypotheses will be tested, differs from the current pattern that we study. The meetings with domain experts at AFAS will be crucial for this phase.\\
+\\
+If the analysis of the patterns known by AFAS is completely finished, we will try to discover other patterns.
+
+% ANSWER THE QUESTIONS STATED IN THE PREVIOUS SECTION
+
 \section{Workflow Event Data}
 Since more than 10 years ago, workflow events are being logged in the software package Profit. These logs are essentially a table where every record represents an action on a task in a certain workflow instance. Although the logs contain more fields, the most relevant fields are shown in an example log in Table \ref{table:log}. The first field is the \textit{Workflow ID} and is a unique reference to a workflow model (task/action graph like in Figure \ref{figure:example_workflow}) where this event sequence is based on. Although I did not include more workflows in the example, there are many workflow models used, so this field is not trivial. By grouping on this field, you collect all event logs of that specific workflow log.
 
@@ -156,46 +195,23 @@ Applying this ordering results in a table where the records are chronologically 
 
 Important to note is that we do not know the workflow model beforehand. Although the example log from Table \ref{table:log} is based on the model in Figure \ref{figure:example_workflow}, in general we do not have access to the corresponding model. Why you might ask? Well, Profit itself only contains templates and basic workflows, but many processes use a workflow which is further customized. Customers can change a standard workflow to their own wishes or make a complete new workflow model to fulfill their wishes. Since the configuration of workflows can be done by customer, these versions are not stored in one central unit, but every environment keeps track of the workflows it uses. Thus, we need to find a way to derive the workflow model from the event logs we obtained. More on this is explained later.
 
-Another issue is that different versions of a workflow can be used throughout time. This means that different descriptions for tasks/actions can be used, or tasks/actions who previously existed in the model can be removed in later versions. Unfortunately, the event logs do not refer to a specific version of a workflow model. This causes a problem when mining for relations between tasks and actions. To give an example, recall the example workflow in Figure \ref{figure:example_workflow} and suppose that, at some point in time, the description of the first task Approve gets changed to Check. The result of this change, is that all upcoming instances of the workflow use a task called ``Check", whereas we before logged ``Approve''. How do we determine that instances using ``Approve'' and instances using ``Check'' use a different workflow model? We can do this by iterating over all instances of a workflow, keeping track of a dictionary where we store the description of every task as a tuple $<\text{Task ID}, \text{Task Description}>$. By starting at the most recent instance, you collect the latest workflow model. When an instance uses a different description for a task, given the Task ID, then you know that its workflow version is different. The same goes for changed actions in a model. This way, we can recognize which instances belong to the same workflow version. This recognition is very important, since we want to derive the correct model and this can only be done when we know which event sequences are based on this model. Using logs which used a different model will of course influence our mined model in a negative way.
+Another issue is that different versions of a workflow can be used throughout time. This means that different descriptions for tasks/actions can be used, or tasks/actions who previously existed in the model can be removed in later versions. Unfortunately, the event logs do not refer to a specific version of a workflow model. This causes a problem when mining for relations between tasks and actions. To give an example, recall the example workflow in Figure \ref{figure:example_workflow} and suppose that, at some point in time, the description of the first task Approve gets changed to Check. The result of this change, is that all upcoming instances of the workflow use a task called ``Check", whereas we before logged ``Approve''. How do we determine that instances using ``Approve'' and instances using ``Check'' use a different workflow model? We can do this by iterating over all instances of a workflow, keeping track of a dictionary where we store the description of every task as a tuple $<\text{Task ID}, \text{Task Description}>$. By starting at the most recent instance, you collect the latest workflow model. When an instance uses a different description for a task, given the Task ID, then you know that its workflow version is different. The same goes for changed actions in a model. This way, we can recognize which instances belong to the same workflow version. This recognition is very important, since we want to derive the correct model and this can only be done when we know which event sequences are based on this model. Using logs which used a different model will of course influence our mined model in a negative way, which is something we try to avoid.
+
+\subsubsection{Word2Vec}
+For comparing two workflow patterns with each other, we use the word2vec model \cite{Mikolov2013a,Mikolov2013b}. This model translates a given corpus into a vector space. This means that each word in the corpus has a certain position, say vector, in this multi-dimensional space. This position is determined using a word's context. The reasoning behind this is very similar words have a very similar context. Shown in Figure \ref{figure:word2vec_example}, juice and apple are likely to appear in the same region. However, we expect the word car to be positioned further away. Furthermore, terms which are used in descriptions of tasks and actions in the the workflow models studied, will behave the same way. For instance, we expect that words as approval and agreement will lie pretty close to each other. 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\linewidth]{word2vec_example.pdf}
+\caption{An example vector space.}
+\label{figure:word2vec_example}
+\end{figure}
 
 
+Using this model, we can train a vector space on the words used in the workflow logs and check whether the words used in the workflow patterns are similar or have very different positions. Since the similarity of terms will be determined based on their positions in the vector space, the exact definition of similarity between such patterns will be given in a later stage. 
 
-\section{Problem}
-The challenge which we undertake in this thesis, is to reason about interesting patterns in a given collection of workflow event logs. As a case study, we use the data of the current product of our case company AFAS Software BV. Before defining \textit{interesting} in our context, we want to know the behavior of workflows and hope to find patterns which represent this behavior the best. Note that we want to look further than the syntactic value of a pattern. We try to come up with a technique such that we can also mine patterns based on their semantics, which will give us a lot more information.\\
-\\
-During an iterative development, including meetings with domain experts of AFAS, we try to discover workflow patterns from which AFAS knows that they exist. However, the behavior of these workflow patterns are still unknown. Thus, by mining and analyzing occurrences of such patterns, we hope to find certain properties about these patterns. Drawing conclusions about such properties are being studied by the use of hypotheses testing. Which hypotheses will be tested, differs from the current pattern that we study. The meetings with domain experts at AFAS will be crucial for this phase.\\
-\\
-If the analysis of the patterns known by AFAS is completely finished, we will try to discover other patterns.
-
-% ANSWER THE QUESTIONS STATED IN THE PREVIOUS SECTION
-
-\section{Literature Study}
-This section refers to previous works, presenting theories and techniques around workflows, workflow patterns and the problem of mining such structures using workflow logs which are valuable for our research.\\
-\\
-% Talk about process re-engineering in general and about workflows
-Business process re-engineering is firstly proposed by \cite{Hammer1990} as an approach to tackle the problem of improving the quality of business processes, while reducing their cost. One of the earlier works presenting workflow management systems are \cite{EngelGLT79,Ellis1982}. The term \textit{information control net model} gets introduced by \cite{Ellis1982}, which can be seen as one of the earlier variants of workflow models. 
-
-As I mentioned earlier, there are no real standards when it comes to the workflow paradigm \cite{VanderAalst1997}. This causes that management systems use different modeling languages, but a more important problem is the ability of verifying and analyzing workflows is often not available in such tools \cite{VanderAalst1997}. Because of this reason, \cite{VanderAalst1997} shows that a class of \textit{Petri nets} can be used as a way to represent workflows, which they call \textit{WF-nets}. Also, the correctness of WF-nets can be analyzed using the Petri net theory. 
-
-% Talk about workflow patterns
-
-The most common way to verify whether a workflow language is a good representation is by checking which \textit{workflow patterns} are covered by this language. A workflow pattern is described by \cite{Riehle1996} as \textit{``the abstraction from a concrete from which keeps recurring in specific nonarbitrary contexts"}, which holds that a pattern represents a certain functionality in a workflow while being dependent of the modeling language. Many \cite{VanderAalst2003Patterns,Dijkstra2003ControlPatterns,Russell2004DataPatterns,Russell2005ResourcePatterns,Russell2006ExceptionPatterns} describe workflow patterns providing functional requirements for workflow model languages. As stated in \cite{VanderAalst2003Patterns,Dijkstra2003ControlPatterns,Russell2004DataPatterns,Russell2005ResourcePatterns,Russell2006ExceptionPatterns}, a workflow pattern is defined by (1) a set of conditions which must be satisfied to be applicable, (2) examples of business situations where this pattern should be applied, (3) a problem description stating why applying this pattern is not trivial and (4) implementation solutions.
-
-% Talk about workflow mining
-Whereas the notion of process mining emerged within the last two decades \cite{VanderAalst2003}, the concept of workflow mining is first introduced by \cite{Agrawal1998}, where an algorithm is presented which has a set of unstructured executions of a business process as input, and outputs a minimal dependency graph representing the control flow of this business process. Furthermore, they discuss ways to cope with cycles in the graph and noise in event logs (missing executions of tasks or wrongly inserted tasks in a log). Others heuristic approaches for noise and incomplete logs are presented in \cite{Maruster2002,Weijters2001,Weijters}. The heuristic approach \cite{Weijters2001,Weijters} is a combination of the following steps: (1) constructing a dependency/frequency table, (2) mining basic dependency relations out of this table and (3) creating a workflow based on the relations found. Besides using these steps, \cite{Maruster2002} presents a logistic regression model to learn when two events are direct dependencies of one another. 
-
-\cite{VanDerAalst2002} states that it is impossible to mine every possible WF-net. They name this challenge being the \textit{rediscovery problem}: \textit{``Find a mining algorithm able to rediscover a large class of sound WF-nets on the basis of complete workflow logs."}\cite{VanDerAalst2002}. An algorithm which can successfully mine a large class of WF-nets is the $\alpha$-algorithm \cite{VanderAalst2003,VanDerAalst2002,VanderAalst2002TimedLogs}, which assumes that the given workflow log is complete (this means that every possible execution path of the business process at hand must be present in the log). Although this completeness requirement is easy to satisfy for a simple workflow, larger workflows will have more trouble. For instance, a workflow having 10 tasks which can be executed in parallel results in $10!=3628800$ possible execution sequences. As you can tell, there is a rather small chance that every possible sequence is covered in a corresponding workflow log. Besides, the $\alpha$-algorithm did have issues with loops and self-loops. Multiple extensions on the $alpha$-algorithm have been developed. like \cite{A+-algorithm2004} which could deal with such short loops, and \cite{VanderAalst2002TimedLogs} which applies the algorithm on timed logs. Timestamps in such logs can be used to study the performance and bottlenecks of tasks in a process.\\
-\\
-
-% Talk about event logging formats
-
-% Talk about sequential pattern mining
-
-% Talk about word2vec
-When we search for research done on determining semantic meanings of words, we see that this field has attracted a lot attention in the last few years. Especially the word2vec model \cite{Mikolov2013a,Mikolov2013b} is a popular technique. This technique results in a vector space representation of words which carries semantic meanings and is very useful in natural language processing tasks. This technique is explained in further detail in Section \ref{section:word2vec}.
-
-% Talk about workflow(pattern) mining tools
-A widely used tool for process mining is ProM \cite{ProM6} (at the time of writing the latest ProM version is 6.7). This open-source, extensible framework has over 600 different plug-ins, including process mining algorithms like the $\alpha$-algorithm, who add their own functionality to the complete software package. ProM gives the user lots of possibilities when it comes down to mining event logs and the user interface helps with getting a good understanding of the structure of process models. In the article \cite{WorkflowMiner2006} are rules shown which describe the sequence- fork- and join workflow patterns. Furthermore, they made a plug-in for ProM 5.2 called ``Workflow pattern miner". 
+\subsection{Workflow mining}
+After completing the pre-processing steps, it is time to find workflow models and mine patterns from these models. As you can read in Section \ref{section:literature}, there are many existing techniques for mining the process model based on a given workflow log. The most complete technique is the Inductive Miner \cite{InductiveMiner2013}, since it always finds a sound, fitting model in a finite time. Therefore, we will use this technique in the phase of obtaining workflow models. Fortunately for us, this technique is implemented as a plug-in of the ProM framework \cite{InductiveVisualMiner2014}, which will be very useful to explore.  
 
 \subsection{The word2vec model}
 \label{section:word2vec}
@@ -204,7 +220,7 @@ The model is proposed in 2013 by \cite{Mikolov2013a,Mikolov2013b}. The earlier w
 \subsubsection{Neural Networks}
 An artificial neural network is based on a biological phenomenom, the human brain. Like a human brain, a neural network exists of neurons. Depending on the given information, i.e. input values, the neurons give a certain output. The input values and their weights can also be represented as vectors $\vec{x}$ and $\vec{w}$. For a more graphical example, see Figure \ref{figure:neuron}.
 
-The input of a neuron is determined by computing average of the sum over the input values and their weights, defined as
+The input of a neuron is determined by computing average of the sum over the input values and their weights, defined as 
 
 \begin{equation}
 u = \sum_{i=0}^{K}w_i x_i = \vec{w}^T \vec{x}.
