@@ -75,6 +75,7 @@ To remove the burden of giving the user the option to define a workflow on such 
 In the eyes of an IT-company which develops and sells ERP-software, it is important to know which processes are most common in a company and what kind of steps are most important in workflows. Of course, having a good insight in the usage of workflows will be very helpful when you want to deliver a workflow management system. Getting a better understanding of the high-level workflow patterns \footnote{From now on, when we talk about workflow patterns, we mean high-level patterns as described here}, and their behavior, in workflow models is the goal of this research project.
 
 \section{Preliminaries}
+\label{section:preliminaries}
 Let us state some basic definitions which we use throughout this thesis.
 First of all, let us give a formal description of what a workflow (pattern) is.
 \begin{defn}[Workflow]
@@ -91,9 +92,18 @@ Two workflow patterns $p$ and $p'$ are said to be similar if they represent the 
 \end{defn}
 
 \begin{defn}[Petri net]
-A petri net is a directed graph, consisting of places and transitions that are connected by arcs. From the literature study follows that Petri nets are a powerful and widely used representation for workflows. A petri representing a workflow is called a \textit{workflow net}, which is a petri net having just one start place and one end place (like a workflow should have). When a workflow consists of blocks which also have the property of starting and ending in one place are called \textit{block-structured}. 
+A petri net is a directed graph, consisting of places and transitions that are connected by arcs. From the literature study follows that Petri nets are a powerful and widely used representation for workflows. A petri representing a workflow is called a \textit{workflow net}, which is a petri net having just one start place and one end place (like a workflow should have). When a workflow net consists of blocks which also have the property of starting and ending in one place, this workflow net is called \textit{block-structured}. 
 \end{defn}
 
+\begin{defn}[Graphs and Trees]
+A graph $G$ consists of a set of vertices $V$ and edges $E$, connecting vertices with each other. A graph can be \textit{labeled}, meaning that every vertex $v \in V$ has a label, like an id or name. A graph can contain cycles, which are paths where the vertex and the start and end of the path are the same. When no cycles are possible, we also speak of trees. 
+
+A rooted tree is a tree where one vertex $v_r$ is seen as the root or starting point. From this root, a path to every other vertex is possible ($v_r, v_1 \ldots v_x$). In other words, every node (another word for vertex) is said to be connected with the root. Nodes $v_a$ that lie on the path of a node $v_x$ to the root node are said to be ancestors of $v_x$ and $v_x$ is called an descendant of the ancestor nodes $v_a$. A node $v_p$ is a parent node of $v_x$ if $v_x$ is a directly descendant of $v_p$. In the same situation, $v_x$ is said to be a child node of $v_p$. Nodes in a tree are often referred to as either leaf nodes or internal nodes. Leaf nodes do not have any child nodes, whereas internal nodes do have children. Nodes having the same parent node are called siblings.
+\end{defn}
+
+\begin{defn}[Subtrees]
+A tree can be split up in so-called subtrees. In general, subtrees are said to be induced or embedded. Tree $S=(V',E')$ is an induced subtree of tree $T=(V,E)$ when $S$ is connected and $V' \subseteq V, E' \subseteq E$. Also, parent relations in $S$ should also be valid in $T$. This constraint is weakened considering embedded subtrees. For embedded trees, instead of the parental relation, the ancestral relation should hold in $T$. This being said, we can say that every induced subtree is an embedded subtree.
+\end{defn}
 
 \section{Literature Study}
 \label{section:literature}
@@ -300,17 +310,8 @@ You might wonder why process trees are so important, whereas so much research \c
 
 \subsection{Finding Patterns in Process Trees}
 \label{section:occurrences}
-Eventually we obtain process trees from the set of workflow logs used as input. Then it is time to mine the occurrences of a given workflow pattern $p$ in a mined process tree $T$. Assuming that this pattern $p$ is given as a process tree, we can search whether $p$ is a subtree in a process tree $T$ in our dataset, i.e. $p \in T$. Here it is needed to know which constraints have to be met in order to conclude that $p$ is contained in $T$. In general, the following two types of subtrees are mostly used (based on definitions given in \cite{FREQT2010Survey}):
-\begin{itemize}
-\item \textit{Induced subtrees}: An induced subtree $T'$ from tree $T$ is defined by the following constraints:
-\begin{enumerate}
-\item $V' \underline{\subset} V$, where $V'$ and $V$ are the sets of vertices for $T'$ and $T$ respectively.
-\item $E' \underline{\subset} E$, where $E'$ and $E$ are the sets of edges for $T'$ and $T$ respectively.
-\item Each vertex $v' \in V'$ is mapped one-to-one to a vertex $v \in V$. The same counts for all edges in $E'$.
-\item Possible ordering of siblings in $T'$ is preserved in $T$.
-\end{enumerate}
-\item \textit{Embedded subtrees}: An embedded subtree $T'$ 
-\end{itemize}
+Eventually we obtain process trees from the set of workflow logs used as input. Then it is time to mine the occurrences of a given workflow pattern $p$ in a mined process tree $T$. Assuming that this pattern $p$ is given as a process tree, we can search whether $p$ is a subtree in a process tree $T$ in our dataset, i.e. $p \in T$. Here it is needed to know which constraints have to be met in order to conclude that $p$ is contained in $T$. Referring to the notion of subtrees in Section \ref{section:preliminaries}, these constraints are different if we consider induced subtrees or embedded subtrees. At this point in time, it is unclear which type of subtrees is relevant for this research study. This will become clearer when we actually consider found occurrences of a given workflow pattern and discuss these with domain experts.
+
 
 \subsection{Developing a Tool}
 Since we want to apply these techniques on a large scale, we need to develop a program that is able to apply the techniques mentioned - given a collection of workflow logs and workflow pattern - and deliver a set of workflow models containing this pattern. Let me go through the components which together form the whole process of retrieving relevant models from workflow logs:
